@@ -1,54 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:movie_mania/models/movie.dart';
 import 'package:movie_mania/screens/detailScreen.dart';
 
 class topWidget extends StatelessWidget {
-  final List<Movie> movies;
+  final Future _future;
 
-  topWidget({this.movies});
+  topWidget(this._future);
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 10,
-      itemBuilder: (context, index) {
-        final movie = movies[index];
-
-        return ListTile(
-          title: InkWell(
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 100,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                        "https://image.tmdb.org/t/p/w500" + movie.poster_path),
-                  ),
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(movie.title),
-                        Text(movie.vote_average.toString()),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            onTap: () =>
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return new detailWidget(
-                movie: movie,
+    return FutureBuilder(
+        future: _future,
+        builder: (ctx, dataSnapshot) {
+          if (dataSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            if (dataSnapshot.error != null) {
+              return Center(
+                child: Text('An error occurred!'),
               );
-            })),
-          ),
-        );
-      },
-    );
+            } else {
+              return ListView.builder(
+                physics: BouncingScrollPhysics(),
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  print(index);
+                  final movie = dataSnapshot.data[index];
+
+                  return ListTile(
+                    title: InkWell(
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 100,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                  "https://image.tmdb.org/t/p/w500" +
+                                      movie.poster_path),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(movie.title),
+                                  Text(movie.vote_average.toString()),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      onTap: () => Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return new detailWidget(
+                          movie: movie,
+                        );
+                      })),
+                    ),
+                  );
+                },
+              );
+            }
+          }
+        });
   }
 }

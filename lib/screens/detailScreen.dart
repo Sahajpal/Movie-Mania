@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_mania/screens/videoPlayer.dart';
 
 class detailWidget extends StatelessWidget {
   final movie;
@@ -56,7 +57,14 @@ class detailWidget extends StatelessWidget {
                   child: Text(
                     'Play Trailer',
                   ),
-                  onPressed: (){},
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return new videoPlayer(
+                        movie: movie,
+                      );
+                    }));
+                  },
                 ),
               ],
             ),
