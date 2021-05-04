@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_mania/models/movie.dart';
+import 'package:movie_mania/screens/detailScreen.dart';
 
 class topWidget extends StatelessWidget {
   final List<Movie> movies;
@@ -39,6 +40,12 @@ class topWidget extends StatelessWidget {
                 ),
               ],
             ),
+            onTap: () =>
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return new detailWidget(
+                movie: movie,
+              );
+            })),
           ),
         );
       },
