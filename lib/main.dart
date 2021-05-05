@@ -23,7 +23,7 @@ class MyApp extends State<App> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => FetchMovies(),
+          create: (_) => FetchData(),
         ),
       ],
       child: MaterialApp(title: 'Movie Mania', home: MovieListScreen()),
