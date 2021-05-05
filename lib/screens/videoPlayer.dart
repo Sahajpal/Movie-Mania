@@ -48,9 +48,11 @@ class _VideoPlayerState extends State<VideoPlayer> {
             return Center(child: CircularProgressIndicator());
           } else {
             if (dataSnapshot.error != null) {
-              return Center(
-                child: Text(
-                    'The Api has no trailers to play for this specific movie'),
+              return Scaffold(
+                body: Center(
+                  child: Text(
+                  'The Api has no trailers to play for this specific movie!!!', textAlign: TextAlign.center, style: TextStyle(fontSize: 30),),
+                ),
               );
             } else {
               return YoutubePlayer(
